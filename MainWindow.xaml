@@ -1,0 +1,407 @@
+﻿<Window x:Class="BurnFat.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BurnFat"
+        mc:Ignorable="d"
+        Title="BurnFat"
+        Background="#1a1b28"
+        Foreground="White"
+        MinHeight="480"
+        MaxHeight="480"
+        MinWidth="340"
+        MaxWidth="340"
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="CanResize"
+        KeyDown="Window_KeyDown"
+        >
+
+    <!-- Стили и шаблоны окна -->
+    <Window.Resources>
+        <!-- Кисти | Цвета -->
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FF242531"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+
+        <!-- Стиль для всех элементов "Button" -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#28b5d0" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#28b5d0" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Thin" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+
+        <!-- Стиль для всех элементов "TextBox" -->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#1e2435" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Padding" Value="4 3" />
+        </Style>
+
+        <!-- Стиль для всех элементов "ComboBox" -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <!-- Стиль для всех элементов "ScrollViewer" -->
+        <Style TargetType="ScrollViewer">
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
+        </Style>
+        
+        <!-- Стиль для всех элементов "ScrollBar" -->
+        <Style TargetType="ScrollBar">
+            <Setter Property="MinWidth" Value="5" />
+            <Setter Property="Width" Value="5" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <!-- Стили для элемента "TextBlock" -->
+        <Style x:Key="Caption" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="Thin" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="TextAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="DescCaption" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Thin" />
+            <Setter Property="TextAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="FieldName" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="Thin" />
+        </Style>
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="8" />
+            <Setter Property="FontWeight" Value="Thin" />
+        </Style>
+        <Style x:Key="EntryCaption" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Margin" Value="20 20 5 5" />
+        </Style>
+        <Style x:Key="Entry" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11" />
+        </Style>
+
+        <!-- Шаблон для элемента "Button" -->
+        <ControlTemplate x:Key="AllButtonTemplate" TargetType="{x:Type ButtonBase}">
+            <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Button.IsDefaulted" Value="true">
+                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="true">
+                    <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                    <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <!-- Шаблон для всех элементов "ScrollViewer" -->
+        <ControlTemplate x:Key="ScrollViewerTemplate1" TargetType="{x:Type ScrollViewer}">
+            <Grid x:Name="Grid" Background="{TemplateBinding Background}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <Rectangle x:Name="Corner"
+                           Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                           Grid.Column="1"
+                           Grid.Row="1"/>
+                
+                <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                        CanHorizontallyScroll="False"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        CanVerticallyScroll="False"
+                                        Content="{TemplateBinding Content}"
+                                        Margin="{TemplateBinding Padding}"
+                                        CanContentScroll="{TemplateBinding CanContentScroll}"
+                                        Grid.Column="0"
+                                        Grid.Row="0"/>
+                
+                <ScrollBar x:Name="PART_VerticalScrollBar"
+                           Template="{DynamicResource ScrollBarTemplate}"
+                           AutomationProperties.AutomationId="VerticalScrollBar"
+                           Cursor="Arrow"
+                           Grid.Column="1"
+                           Maximum="{TemplateBinding ScrollableHeight}"
+                           Minimum="0"
+                           Grid.Row="0"
+                           Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"
+                           Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
+            </Grid>
+        </ControlTemplate>
+        
+    </Window.Resources>
+
+
+    <!-- Визульное представление окна -->
+    <Border
+        BorderThickness="1"
+        BorderBrush="Black">
+
+        <DockPanel>
+            <!-- Верхняя часть программы с кнопкой выхода и названием программы -->
+            <Grid x:Name="Header"
+                DockPanel.Dock="Top"
+                Height="32"
+                MouseLeftButtonDown="Header_MouseLeftButtonDown"
+                Background="Transparent">
+
+                <!-- Конструкция с названием программы -->
+                <WrapPanel
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left">
+
+                    <TextBlock
+                        Margin="10 0"
+                        Text="BurnFat"/>
+                </WrapPanel>
+
+                <!-- Кнопка закрытия программы -->
+                <Button Name="CloseBtn"
+                        ToolTip="Esc"
+                        Template="{DynamicResource AllButtonTemplate}"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        Height="32"
+                        Width="48"
+                        Margin="0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Click="CloseBtn_Click">
+
+                    <Image
+                        Width="12"
+                        Height="12"
+                        Source="/close-64.png"/>
+                </Button>
+            </Grid>
+
+            <!-- Раздел "Калькулятор" -->
+            <Canvas x:Name="CalcPage"
+                    Visibility="Visible" >
+
+                <!-- Поле вывода результата вычислений -->
+                <TextBlock Name="resultTBl"
+                           HorizontalAlignment="Center"
+                           Height="145"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Top"
+                           Width="318"
+                           Canvas.Left="10"
+                           Canvas.Top="291"/>
+
+                <!-- Поле ввода пульса -->
+                <TextBox Name="pulseTB"
+                         ToolTip="Введите ваш пульс в состоянии покоя"
+                         Width="160"
+                         KeyUp="pulseTB_KeyUp"
+                         Canvas.Left="88"
+                         Canvas.Top="179"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Center"
+                         KeyDown="pulseTB_KeyDown"/>
+
+                <!-- Поле выбора возраста -->
+                <ComboBox Name="ageCB"
+                          ToolTip="Выберите ваш возраст"
+                          Template="{DynamicResource ComboBoxTemplate}"
+                          Width="160"
+                          Canvas.Left="88"
+                          Canvas.Top="121"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Center"
+                          SelectionChanged="ageCB_SelectionChanged"/>
+
+                <!-- Кнопка "Вычислить" -->
+                <Button Name="CalcBtn"
+                        ToolTip="Нажмите, чтобы вычислить результат"
+                        Template="{DynamicResource RoundedButtonTemplate}"
+                        Content="Вычислить"
+                        Height="32"
+                        Width="96"
+                        Click="CalcBtn_Click"
+                        Canvas.Left="92"
+                        Canvas.Top="234"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"/>
+
+                <!-- Кнопка перехода в раздел "История вычислений" -->
+                <Button Name="StoryBtn"
+                    ToolTip="История вычислений. Ctrl + H"
+                    Template="{DynamicResource AllButtonTemplate}"
+                    BorderThickness="0"
+                    Background="Transparent"
+                    Height="32"
+                    Width="48"
+                    Click="StoryBtn_Click"
+                    Canvas.Left="198"
+                    Canvas.Top="234"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top">
+
+                    <Image
+                        Width="24"
+                        Height="24"
+                        Source="/history-64.png"/>
+                </Button>
+
+                <!-- Надпись "Заголовок раздела" -->
+                <TextBlock Style="{DynamicResource Caption}"
+                    Text="Расчет пульса для сжигания жира"
+                    Width="280"
+                    Canvas.Top="20"
+                    Canvas.Left="29"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"/>
+
+                <!-- Надпись "Подпись к полю выбора возраста" -->
+                <TextBlock Style="{DynamicResource FieldName}"
+                    Text="Возраст"
+                    Canvas.Top="104"
+                    Canvas.Left="90"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"/>
+
+                <!-- Надпись "Подпись к полю ввода пульса" -->
+                <TextBlock Style="{DynamicResource FieldName}"
+                           Text="Пульс"
+                           ToolTip="Пульс в состоянии покой сердца"
+                           Canvas.Top="162"
+                           Canvas.Left="90"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"/>
+
+                <!-- Надпись "Подсказка к полю ввода пульса" -->
+                <TextBlock x:Name="pulseTip"
+                    Style="{DynamicResource FieldLabel}"
+                    Visibility="Hidden"
+                    Text="Допустимое значение в дипозоне 40..109"
+                    Canvas.Top="209"
+                    Canvas.Left="89"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"/>
+
+            </Canvas>
+            
+            <!-- Раздел "История вычислений" -->
+            <Canvas x:Name="StoryPage"
+                    Visibility="Collapsed"
+                    IsVisibleChanged="StoryPage_IsVisibleChanged" >
+
+                <!-- Верхняя часть раздела | Панель, что не скролится -->
+                <DockPanel
+                    Width="338"
+                    Canvas.Top="15"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top">
+
+                    <!-- Кнопка перехода в раздел "Калькулятор" -->
+                    <Button Name="BackBtn"
+                            ToolTip="Esc"
+                        Template="{DynamicResource AllButtonTemplate}"
+                        DockPanel.Dock="Left"
+                        Click="BackBtn_Click"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        Height="32"
+                        Width="48"
+                        Margin="5 0 0 0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        >
+
+                        <Image
+                            Width="24"
+                            Height="24"
+                            Source="/back-64.png"/>
+                    </Button>
+
+                    <!-- Кнопка "Очистка истории вычислений" -->
+                    <Button Name="BinBtn"
+                            ToolTip="Очистка истории. Нажмите Del"
+                            Template="{DynamicResource AllButtonTemplate}"
+                            DockPanel.Dock="Right"
+                            Click="BinBtn_Click"
+                            BorderThickness="0"
+                            Background="Transparent"
+                            Height="32"
+                            Width="48"
+                            Margin="0 0 5 0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top" >
+
+                        <Image
+                            Width="24"
+                            Height="24"
+                            Source="/bin-64.png"/>
+                    </Button>
+
+                    <!-- Надпись "Заголовок раздела" -->
+                    <TextBlock Style="{DynamicResource Caption}"
+                        Text="История вычислений"
+                        Canvas.Left="67"
+                        Canvas.Top="17"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        />
+                </DockPanel>
+
+                <!-- Облась прокрутки истории вычислений -->
+                <ScrollViewer x:Name="storyViewer"
+                    Template="{DynamicResource ScrollViewerTemplate1}"
+                    Height="393"
+                    Width="338"
+                    Canvas.Left="0"
+                    Canvas.Top="52"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top">
+
+                    <!-- Панель для добавления записей истории вычислений динамически -->
+                    <StackPanel x:Name="StoryStackPanel">
+
+                        <!-- Подпись по-умолчанию, когда нет записей в истории вычислений -->
+                        <TextBlock
+                            Style="{DynamicResource DescCaption}"
+                            Text="Нет записей.."
+                            />
+                        
+                    </StackPanel>
+                </ScrollViewer>
+            </Canvas>
+        </DockPanel>
+    </Border>
+</Window>

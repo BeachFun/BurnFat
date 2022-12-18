@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>free-icon-burn-1656159.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="back-64.png" />
+    <None Remove="bin-64.png" />
+    <None Remove="close-64.png" />
+    <None Remove="history-64.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="free-icon-burn-1656159.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="back-64.png" />
+    <Resource Include="bin-64.png" />
+    <Resource Include="close-64.png" />
+    <Resource Include="history-64.png" />
+  </ItemGroup>
+
+</Project>
